@@ -1,23 +1,26 @@
-{
+$( document ).ready(function() {
+  const $songList = $('#song-list');
+
   album.songs.forEach( (song, index) => {
-     song.element = $(`
-       <tr>
-       <td>
-           <button>
-             <span class="song-number">${index + 1}</span>
-             <span class="ion-play"></span>
-             <span class="ion-pause"></span>
-           </button>
-         </td>
-      <td>${song.title}</td>
-      <td>${song.duration}</td>
-        </tr>
-     `);
+    song.element = $(`
+      <tr class="song">
+        <td class="song-actions">
+          <button>
+            <span class="song-number">${index+1}</span>
+            <span class="ion-play"></span>
+            <span class="ion-pause"></span>
+          </button>
+        </td>
+        <td class="song-title">${song.title}</td>
+        <td class="song-duration">${player.prettyTime(song.duration)}</td>
+      </tr>`);
 
-          song.element.on('click', event => {
-            player.playPause(song);
-          });
+    song.element.click( event => {
+      player.playPause(song);
+      $('button#play-pause').attr('playState', player.playState);
+      $('#time-control .total-time').text( player.prettyTime(song.duration) );
+    });
 
-     $('#song-list').append(song.element);
-   });
-}
+    $songList.append(song.element);
+  });
+});
