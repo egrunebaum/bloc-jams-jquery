@@ -49,3 +49,17 @@ $('button#previous').on('click', function(){
         const previousSong = album.songs[previousSongIndex];
         player.playPause(previousSong);
       });
+      setInterval( () => {
+      if (player.playState !== 'playing') { return; }
+      const currentTime = player.getTime();
+      const duration = player.getDuration();
+      const percent = (currentTime / duration) * 100;
+      $('#time-control .current-time').text(player.prettyTime(currentTime));
+      $('#time-control input').val(percent);
+      $('.total-time').text(player.prettyTime(duration));
+    }, 1000);
+
+    $('#volume-control input').on('input', function (event) {
+      player.setVolume(event.target.value);
+    });
+}
